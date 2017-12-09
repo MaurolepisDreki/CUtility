@@ -27,6 +27,7 @@ endif( NOT CMAKE_USE_PTHREADS_INIT )
 add_library( cutil STATIC
 	"listing.c"
 	"listing_foreach.c"
-#	"hashtree.c"
+	"hashtree.c"
+	"hashtree_foreach.c"
 #	"tabulation.c"
 )

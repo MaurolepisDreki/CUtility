@@ -7,6 +7,12 @@ typedef struct {
 	pthread_mutex_t mutex;
 } Listing_Foreach_Queue;
 
+typedef struct {
+	Listing_Foreach_Queue lfq;
+	void (*cb)(void *, void *);
+	void *cb_data;
+} Listing_Foreach_JobMeta;
+
 void Listing_Foreach_Queue_Setup( Listing_Foreach_Queue *lfq, Listing mylisting ) {
 	lfq->current = mylisting->head;
 	pthread_mutex_init( &lfq->mutex, NULL );
@@ -14,6 +20,17 @@ void Listing_Foreach_Queue_Setup( Listing_Foreach_Queue *lfq, Listing mylisting 
 
 void Listing_Foreach_Queue_Teardown( Listing_Foreach_Queue *lfq ) {
 	pthread_mutex_destroy( &lfq->mutex );
+}
+
+void Listing_Foreach_JobMeta_Setup( Listing_Foreach_JobMeta *lfjm, Listing mylisting, void (*cb)(void *, void *), void *cb_data ) {
+	Listing_Foreach_Queue_Setup( &lfjm->lfq, mylisting );
+	
+	lfjm->cb = cb;
+	lfjm->cb_data = cb_data;
+}
+
+void Listing_Foreach_JobMeta_Teardown( Listing_Foreach_JobMeta *lfjm ) {
+	Listing_Foreach_Queue_Teardown( &lfjm->lfq );
 }
 
 Listing_Node *Listing_Foreach_Queue_Next( Listing_Foreach_Queue *lfq ) {
@@ -29,23 +46,6 @@ Listing_Node *Listing_Foreach_Queue_Next( Listing_Foreach_Queue *lfq ) {
 	pthread_mutex_unlock( &lfq->mutex );
 
 	return next;
-}
-
-typedef struct {
-	Listing_Foreach_Queue lfq;
-	void (*cb)(void *, void *);
-	void *cb_data;
-} Listing_Foreach_JobMeta;
-
-void Listing_Foreach_JobMeta_Setup( Listing_Foreach_JobMeta *lfjm, Listing mylisting, void (*cb)(void *, void *), void *cb_data ) {
-	Listing_Foreach_Queue_Setup( &lfjm->lfq, mylisting );
-	
-	lfjm->cb = cb;
-	lfjm->cb_data = cb_data;
-}
-
-void Listing_Foreach_JobMeta_Teardown( Listing_Foreach_JobMeta *lfjm ) {
-	Listing_Foreach_Queue_Teardown( &lfjm->lfq );
 }
 
 void *Listing_Foreach_Worker( void *data ) {
