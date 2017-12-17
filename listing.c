@@ -330,3 +330,71 @@ void Listing_Remove( Listing mylisting, unsigned int index ) {
 		if( mylisting->cacheIDs[ix] > index )
 			mylisting->cacheIDs[ix]--;
 }
+
+/* Move one listing into another */
+void Listing_Merge( Listing dest, Listing orig ) {
+	dest->tail->next = orig->head;
+	orig->head->prev = dest->tail;
+	dest->tail = orig->tail;
+	orig->head = NULL;
+	orig->tail = NULL;
+	dest->count += orig->count;
+	orig->count = 0;
+}
+
+/* Copy one listing into another */
+void Listing_Clone_Foreach_Callback( void *dest, void *data ) {
+	Listing_PushBack( dest, data );
+}
+
+void Listing_Clone( Listing dest, Listing orig ) {
+	Listing_Foreach( orig, &Listing_Clone_Foreach_Callback, dest, 1 );
+}
+
+/* Find an item in the listing */
+typedef struct {
+	bool (*test)( void *data, void *entry );
+	void *testData;
+	Listing list;
+} Listing_Find_Foreach_Meta;
+
+void Listing_Find_Foreach_Callback( void *meta, void *entry ) {
+	Listing_Find_Foreach_Meta *typedMeta = (Listing_Find_Foreach_Meta *)meta;
+	if( typedMeta->test( typedMeta->testData, entry ) ) {
+		Listing_PushBack( typedMeta->list, entry );
+	}
+}
+
+Listing Listing_Find( Listing list, bool (*test)( void *, void * ), void *data, int threads ) {
+	Listing_Find_Foreach_Meta md;
+	md.list = Listing_Init();
+	md.test = test;
+	md.testData = data;
+	
+	Listing_Foreach( list, &Listing_Find_Foreach_Callback, &md, threads );
+	
+	return md.list;
+}
+
+/* Count Accessor */
+unsigned int Listing_Count( Listing mylisting ) {
+	return mylisting->count;
+}
+
+/* Find index of entry */
+int Listing_IndexOf( Listing list, void *target ) {
+	int result = 0;
+	Listing_Node *cpos = list->head;
+
+	while( cpos != NULL && cpos->data != target ) {
+		result++;
+		cpos = cpos->next;
+	}
+
+	if( cpos == NULL ) {
+		return -1;
+	} else {
+		return result;
+	}
+}
+

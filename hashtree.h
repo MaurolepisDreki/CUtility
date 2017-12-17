@@ -32,15 +32,18 @@ HashTree HashTree_Init();
 void HashTree_Free( HashTree *ht );
 
 /* Data (Re)Assignment */
-void HashTree_Assign( HashTree ht, void *hash, size_t hash_len, void *data );
+void HashTree_Assign( HashTree ht, const void *hash, size_t hash_len, void *data );
 
 /* Data Retreival */
-void *HashTree_Retrieve( HashTree ht, void *hash, size_t hash_len );
+void *HashTree_Retrieve( HashTree ht, const void *hash, size_t hash_len );
 
 /* Data Release (Unassignment) */
-void HashTree_Release( HashTree ht, void *hash, size_t hash_len );
+void HashTree_Release( HashTree ht, const void *hash, size_t hash_len );
 
 /* Foreach Entry */
-void HashTree_Foreach( HashTree ht, void (*callback)(void * /* data */, void * /* hash */, size_t /* hash_len */, void * /* entry */), void *data, int threads );
+void HashTree_Foreach( HashTree ht, void (*callback)(void * /* data */, const void * /* hash */, size_t /* hash_len */, void * /* entry */), void *data, int threads );
+
+/* Entry Count */
+size_t HashTree_Count( HashTree );
 
 #endif

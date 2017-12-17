@@ -24,10 +24,21 @@ if( NOT CMAKE_USE_PTHREADS_INIT )
 	message( FATAL_ERROR "Library currently only compatable with POSIX Threads" )
 endif( NOT CMAKE_USE_PTHREADS_INIT )
 
-add_library( cutil STATIC
+add_library( listing STATIC 
 	"listing.c"
 	"listing_foreach.c"
+)
+
+add_library( hashtree STATIC
 	"hashtree.c"
 	"hashtree_foreach.c"
-#	"tabulation.c"
+)
+
+add_library( tabulation STATIC
+	"tabulation.c"
+)
+
+target_link_libraries( tabulation 
+	PUBLIC listing
+	PUBLIC hashtree
 )

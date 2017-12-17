@@ -29,7 +29,7 @@ void HashTree_Free( HashTree *ht ) {
 }
 
 /* Assign data to the tree recursivly adding nodes as needed */
-void HashTree_Assign( HashTree ht, void *hash, size_t hash_len, void *data ) {
+void HashTree_Assign( HashTree ht,  const void *hash, size_t hash_len, void *data ) {
 	int index;
 	
 	/* Assign data if there are no more bytes in the hash */
@@ -94,7 +94,7 @@ void HashTree_Assign( HashTree ht, void *hash, size_t hash_len, void *data ) {
 }
 
 /* Recursivly find stored data by it's hash */
-void *HashTree_Retrive( HashTree ht, void *hash, size_t hash_len ) {
+void *HashTree_Retrive( HashTree ht, const void *hash, size_t hash_len ) {
 	int start, end, mid;
 	
 	if( hash_len == 0 ) {
@@ -120,7 +120,7 @@ void *HashTree_Retrive( HashTree ht, void *hash, size_t hash_len ) {
 }
 
 /* Discard data from the tree, recursivly clearing unused nodes */
-void HashTree_Release( HashTree ht, void *hash, size_t hash_len ) {
+void HashTree_Release( HashTree ht, const void *hash, size_t hash_len ) {
 	int start, end, mid, new_subnode_count;
 	HashTree_Node **new_subnode;
 	
@@ -173,4 +173,15 @@ void HashTree_Release( HashTree ht, void *hash, size_t hash_len ) {
 	}
 	
 	ht->subnode_count = new_subnode_count;
+}
+
+/* Count HashTree Entries */
+void HashTree_Count_Foreach_Callback( void *count, const void *hash, size_t hlen, void *entry ) {
+	(*((size_t *)count))++;
+}
+
+size_t HashTree_Count( HashTree ht ) {
+	size_t result = 0;
+	HashTree_Foreach( ht, &HashTree_Count_Foreach_Callback, &result, 1 );
+	return result;
 }

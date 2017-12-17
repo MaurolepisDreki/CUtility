@@ -19,7 +19,7 @@ typedef struct {
 
 typedef struct {
 	HashTree_Foreach_Queue htQueue;
-	void (*cb)(void *, void *, size_t, void *);
+	void (*cb)(void *, const void *, size_t, void *);
 	void *cb_data;
 } HashTree_Foreach_JobMeta;
 
@@ -73,7 +73,7 @@ void HashTree_Foreach_Queue_Teardown( HashTree_Foreach_Queue *htfq ) {
 	pthread_mutex_destroy( &htfq->mutex );
 }
 
-void HashTree_Foreach_JobMeta_Setup( HashTree_Foreach_JobMeta *htfjm, HashTree ht, void (*cb)(void *, void*, size_t, void *), void *cb_data ) {
+void HashTree_Foreach_JobMeta_Setup( HashTree_Foreach_JobMeta *htfjm, HashTree ht, void (*cb)(void *, const void*, size_t, void *), void *cb_data ) {
 	htfjm->cb = cb;
 	htfjm->cb_data = cb_data;
 	HashTree_Foreach_Queue_Setup( &htfjm->htQueue, ht );
@@ -150,7 +150,7 @@ void *HashTree_Foreach_Worker( void *data ) {
 	} while( htHash == (void *)0b1 );
 }
 
-void HashTree_Foreach( HashTree ht, void (*callback)(void * /* data */, void * /* hash */, size_t /* hash_len */, void * /* entry */), void *data, int threads ) {
+void HashTree_Foreach( HashTree ht, void (*callback)(void * /* data */, const void * /* hash */, size_t /* hash_len */, void * /* entry */), void *data, int threads ) {
 	pthread_t thread_list[threads - 1];
 	void *result;
 	

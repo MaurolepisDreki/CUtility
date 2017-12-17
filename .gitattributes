@@ -1,0 +1,4 @@
+# We are C, not C++.  Make sure GitHub knows this!
+*.h linguist-language=C
+*.c linguist-language=C
+
