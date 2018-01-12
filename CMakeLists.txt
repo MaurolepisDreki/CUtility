@@ -2,9 +2,10 @@ cmake_minimum_required( VERSION 3.6 )
 project( "C Utility" 
 	VERSION 0.1.0.0 
 	DESCRIPTION "Structures and Utilities common to most applications but not native to C"
-	LANGUAGES C
+	LANGUAGES C CXX
 )
 
+# Check for required libraries and headers
 include(CheckIncludeFile)
 
 CHECK_INCLUDE_FILE( "stdbool.h" HAVE_STDBOOL_H )
@@ -24,6 +25,14 @@ if( NOT CMAKE_USE_PTHREADS_INIT )
 	message( FATAL_ERROR "Library currently only compatable with POSIX Threads" )
 endif( NOT CMAKE_USE_PTHREADS_INIT )
 
+# force C compiler for C sources and C++ compiler for C++ sources
+#   (apperently C++ compiler superceeds C compiler by default)
+set_property( SOURCE *.c PROPERTY LANGUAGE C )
+set_property( SOURCE *.cpp PROPERTY LANGUAGE CXX )
+
+# Include GDB Macro metadata in debug build
+set( CMAKE_C_FLAGS_DEBUG "-g3" )
+
 add_library( listing STATIC 
 	"listing.c"
 	"listing_foreach.c"
@@ -34,6 +43,10 @@ add_library( hashtree STATIC
 	"hashtree_foreach.c"
 )
 
+add_library( bitstring STATIC
+	"bitstring.c"
+)
+
 add_library( tabulation STATIC
 	"tabulation.c"
 )
@@ -41,4 +54,12 @@ add_library( tabulation STATIC
 target_link_libraries( tabulation 
 	PUBLIC listing
 	PUBLIC hashtree
+)
+
+add_executable( bitstring_test 
+	bitstring_test.cpp
+)
+
+target_link_libraries( bitstring_test
+	PUBLIC bitstring
 )
