@@ -1,5 +1,6 @@
 #include "bitstring.h"
 #include <stdlib.h>
+#include "util.h"
 
 /* Calculation for the number of bytes needed to store our bits
  *   len := the number of bits we will require
@@ -9,7 +10,8 @@
 /* Constructor */
 void BitString_Init( BitString *bs, int len ) {
 	bs->count = len;
-	bs->data = malloc( BitString_Bits2Bytes( len ) );
+	/*bs->data = malloc( BitString_Bits2Bytes( len ) );*/
+	fmalloc( bs->data, BitString_Bits2Bytes( len ) );
 
 	/* Zero-out allocated memory */
 	for( int ibyte = 0; ibyte < BitString_Bits2Bytes( len ); ibyte++ )
