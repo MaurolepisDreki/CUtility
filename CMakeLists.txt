@@ -38,6 +38,14 @@ add_library( listing STATIC
 	"listing_foreach.c"
 )
 
+add_library( batch STATIC
+	"batch.c"
+)
+
+target_link_libraries( batch
+	PUBLIC listing
+)
+
 add_library( hashtree STATIC
 	"hashtree.c"
 	"hashtree_foreach.c"
