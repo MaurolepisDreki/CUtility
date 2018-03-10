@@ -46,6 +46,15 @@ target_link_libraries( batch
 	PUBLIC listing
 )
 
+add_library( taskE STATIC
+	"task.c"
+	"taskEngine.c"
+)
+
+target_link_libraries( taskE
+	PUBLIC listing
+)
+
 add_library( hashtree STATIC
 	"hashtree.c"
 	"hashtree_foreach.c"

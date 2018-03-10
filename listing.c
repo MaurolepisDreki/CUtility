@@ -381,6 +381,10 @@ unsigned int Listing_Count( Listing mylisting ) {
 	return mylisting->count;
 }
 
+bool Listing_isEmtpy( Listing mylisting ) {
+	return mylisting->count == 0;
+}
+
 /* Find index of entry */
 int Listing_IndexOf( Listing list, void *target ) {
 	int result = 0;
