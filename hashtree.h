@@ -1,7 +1,8 @@
-/* AUTHOR:   Nile Aagard
- * CREATED:  2017-10-21
- * MODIFIED: 2017-10-21
- * DESCRIPTION: A Hashtree Structure Implimentation;
+/** @file
+ * @author	Nile Aagard
+ * @date		2017.10.21 ==> 2017.10.21
+ * @brief	 A Hashtree Structure Implimentation
+ * @details
  *   A Hashtree is a key-value pair structure for storing and retriving data
  *    where the key and the value can be of any type, like a primitive form of C++'s std::map.
  */

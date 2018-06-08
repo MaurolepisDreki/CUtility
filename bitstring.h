@@ -1,3 +1,4 @@
+/// @file
 /*******************************************************************************
  * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BitString <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< *
  *******************************************************************************
@@ -21,45 +22,51 @@ typedef struct {
 	byte *data;
 } BitString;
 
-/* Initialize the BitString
- *   bs  := the BitString to initialize
- *   len := the initial number of bits represented
+/**
+ * Initialize the BitString
+ *   @param bs		The BitString to initialize
+ *   @param len	The initial number of bits represented
  */
 void BitString_Init( BitString *bs, int len );
 
-/* Cleanup the BitString
- *   bs := the BitString to be cleaned
+/**
+ * Cleanup the BitString
+ *   @param bs		The BitString to be cleaned
  */
 void BitString_Free( BitString *bs );
 
-/* Retrieve the bit-count from the BitString
+/**
+ * Retrieve the bit-count from the BitString
  *   bs := the BitString to read
  */
 int BitString_Count( BitString *bs );
 
-/* Set/Get individual bits in the BitString
- *   bs     := The BitString to access
- *   index  := the index of the bit to access (starts at 0)
- *   value  := the value of the bit accessed (Set Only)
- *   return := the value of the bit accessed (Get Only)
+/**
+ * Set/Get individual bits in the BitString
+ *   @param bs		The BitString to access
+ *   @param index	The index of the bit to access (starts at 0)
+ *   @param value	The value of the bit accessed (Set Only)
+ *   @return		The value of the bit accessed (Get Only)
  */
 void BitString_Set( BitString *bs, int index, bool value );
 bool BitString_Get( BitString *bs, int index );
 
-/* Copy bits between BitStrings 
- *   destBS    := destination BitString
- *   origBS    := origin BitString
- *   destIndex := destination start bit
- *   origIndex := origin start bit
- *   count     := number of bits to copy
+/**
+ * Copy bits between BitStrings 
+ *   @param destBS		Destination BitString
+ *   @param origBS		Origin BitString
+ *   @param destIndex	Destination start bit
+ *   @param origIndex	Origin start bit
+ *   @param count			Number of bits to copy
  */
 void BitString_Copy( BitString *destBS, int destIndex, BitString *origBS, int origIndex, int count );
 
-/* Fill range of bits in BitString
- *   bs    := the BitString to interact with
- *   index := the first bit to set
- *   count := the number of bits to set
- *   value := the value the bits should contain
+/**
+ * Fill range of bits in BitString
+ *   @param bs		The BitString to interact with
+ *   @param index	The first bit to set
+ *   @param count	The number of bits to set
+ *   @param value	The value the bits should contain
  */
 void BitString_Fill( BitString *bs, int index, int count, bool value );
 

@@ -25,6 +25,9 @@ if( NOT CMAKE_USE_PTHREADS_INIT )
 	message( FATAL_ERROR "Library currently only compatable with POSIX Threads" )
 endif( NOT CMAKE_USE_PTHREADS_INIT )
 
+# Doxygen 
+include( config.doxygen.cmake )
+
 # force C compiler for C sources and C++ compiler for C++ sources
 #   (apperently C++ compiler superceeds C compiler by default)
 set_property( SOURCE *.c PROPERTY LANGUAGE C )
@@ -80,3 +83,4 @@ add_executable( bitstring_test
 target_link_libraries( bitstring_test
 	PUBLIC bitstring
 )
+
